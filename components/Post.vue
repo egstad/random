@@ -2,7 +2,7 @@
   <article
     class="pair"
     :class="[{ 'is-active': imageIsVisible }]"
-    @click="imageIsVisible = !imageIsVisible"
+    @click="show"
     ref="post"
   >
     <header v-if="image">
@@ -67,6 +67,13 @@ export default {
         }
       });
     },
+    show() {
+      // const x = this.$el.getBoundingClientRect().top;
+      // console.log(x);
+      // window.scrollTo(x, 0);
+      this.$el.scrollIntoView();
+      this.imageIsVisible = !this.imageIsVisible;
+    },
   },
 };
 </script>
@@ -106,8 +113,8 @@ export default {
 .pair__pic {
   display: flex;
   justify-content: center;
-  /* max-height: 0;
-  opacity: 0; */
+  max-height: 0;
+  opacity: 0;
   transition: max-height 250ms ease-in-out, opacity 250ms ease-in-out;
 }
 .is-active .pair__pic {

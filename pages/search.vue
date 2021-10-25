@@ -24,7 +24,7 @@
           />
         </td>
         <td v-else>None</td>
-        <td v-if="result.image">
+        <td v-if="result.image" style="max-width: 400px">
           <pre>{{ result }}</pre>
         </td>
         <td v-else>None</td>
@@ -69,15 +69,15 @@ export default {
     copyString() {
       navigator.clipboard.writeText(`"${this.searchInput}",`);
     },
-    capitalize(ev) {
-      var separateWord = ev.target.value.toLowerCase().split(" ");
-      for (var i = 0; i < separateWord.length; i++) {
-        separateWord[i] =
-          separateWord[i].charAt(0).toUpperCase() +
-          separateWord[i].substring(1);
-      }
-      this.searchInput = separateWord.join(" ");
-    },
+    // capitalize(ev) {
+    //   var separateWord = ev.target.value.toLowerCase().split(" ");
+    //   for (var i = 0; i < separateWord.length; i++) {
+    //     separateWord[i] =
+    //       separateWord[i].charAt(0).toUpperCase() +
+    //       separateWord[i].substring(1);
+    //   }
+    //   this.searchInput = separateWord.join(" ");
+    // },
   },
 };
 </script>
