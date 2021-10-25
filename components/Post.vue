@@ -1,8 +1,8 @@
 <template>
   <article
     class="pair"
-    :class="[{ 'is-active': imageIsVisible }]"
-    @click="show"
+    :class="[{ 'is-active': imageIsVisible }, { 'is-visible': isInView }]"
+    @click.prevent="toggle"
     ref="post"
   >
     <header v-if="image">
@@ -20,6 +20,16 @@
         :width="image.width"
         :height="image.height"
       />
+      <figcaption>
+        <a
+          :href="`https://en.wikipedia.org/wiki/${formatStringForWiki(
+            combo.imageQueryString
+          )}`"
+          @click.stop
+          target="_blank"
+          >{{ combo.imageQueryString }}</a
+        >
+      </figcaption>
     </figure>
   </article>
 </template>
@@ -33,6 +43,8 @@ export default {
       image: null,
       observer: null,
       observerOptions: { rootMargin: `100% 0px`, threshold: 0 },
+      observerAnimation: null,
+      isInView: false,
     };
   },
   props: {
@@ -44,10 +56,16 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.observer = new IntersectionObserver(
-        this.observerCallback,
+        this.observerLazyLoad,
         this.observerOptions
       );
       this.observer.observe(this.$refs.post);
+
+      // animation
+      this.observerAnimation = new IntersectionObserver(
+        this.observerAnimationCallback
+      );
+      this.observerAnimation.observe(this.$refs.post);
     });
   },
   methods: {
@@ -59,7 +77,7 @@ export default {
 
       this.image = api.query.pages[0].thumbnail;
     },
-    observerCallback(entries) {
+    observerLazyLoad(entries) {
       entries.map((entry) => {
         if (entry.isIntersecting) {
           this.getImage();
@@ -67,12 +85,23 @@ export default {
         }
       });
     },
+    observerAnimationCallback(entries) {
+      entries.map((entry) => {
+        entry.isIntersecting ? (this.isInView = true) : (this.isInView = false);
+      });
+    },
     show() {
-      // const x = this.$el.getBoundingClientRect().top;
-      // console.log(x);
-      // window.scrollTo(x, 0);
       this.$el.scrollIntoView();
-      this.imageIsVisible = !this.imageIsVisible;
+      this.imageIsVisible = true;
+    },
+    hide() {
+      this.imageIsVisible = false;
+    },
+    toggle() {
+      this.imageIsVisible ? this.hide() : this.show();
+    },
+    formatStringForWiki(str) {
+      return str.split(" ").join("_");
     },
   },
 };
@@ -81,7 +110,13 @@ export default {
 <style scoped>
 .pair {
   width: 100%;
+  opacity: 0;
+  transition: opacity 400ms ease-in-out;
 }
+.pair.is-visible {
+  opacity: 1;
+}
+
 .pair:hover {
   color: white;
   cursor: pointer;
@@ -97,9 +132,12 @@ export default {
   line-height: 0.9;
   position: relative;
   z-index: 3;
+  transition: color 250ms ease-out;
+  /* mix-blend-mode: exclusion; */
+  /* min-height: 64px; */
 }
 
-.is-active .pair__header {
+.is-active:hover .pair__header {
   color: white;
 }
 
@@ -111,11 +149,13 @@ export default {
 }
 
 .pair__pic {
-  display: flex;
-  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  /* display: flex; */
+  /* justify-content: center; */
   max-height: 0;
   opacity: 0;
-  transition: max-height 250ms ease-in-out, opacity 250ms ease-in-out;
+  transition: max-height 450ms ease-in-out, opacity 250ms 100ms ease-out;
 }
 .is-active .pair__pic {
   max-height: 100vh;
@@ -123,8 +163,48 @@ export default {
 }
 
 .pair__pic img {
-  max-height: 70vh;
+  max-height: 75vh;
+  height: 100%;
   width: auto;
+  margin: 0 auto;
+  transform: scale(0.95);
+  transition: transform 350ms ease-in-out;
+}
+.is-active .pair__pic img {
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.pair__pic figcaption {
+  position: relative;
+  z-index: 100;
+  /* top: 0.5em; */
+  /* left: 0.5em; */
+  /* right: 0.5em;  */
+  display: flex;
+  justify-content: center;
+}
+
+.pair__pic a {
+  text-align: center;
+  font-family: monospace;
+  text-transform: uppercase;
+  /* background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: 5px;
+  border-radius: 100vw; */
+  /* color: rgba(255, 255, 255, 0.5); */
+  color: #524e2f;
+
+  padding: 0.2em 1em;
+  text-decoration: none;
+  font-size: 0.8em;
+  letter-spacing: 0.05em;
+
+  transition: color 200ms ease-in-out, background-color 200ms ease-in-out;
+}
+
+.pair__pic a:hover {
+  color: white;
+  background: black;
 }
 
 .t-display {
