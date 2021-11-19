@@ -169,6 +169,7 @@ export default {
   max-height: 75vh;
   height: 100%;
   width: auto;
+  width: 100%;
   margin: 0 auto;
   transform: scale(0.95);
   transition: transform 350ms ease-in-out;
