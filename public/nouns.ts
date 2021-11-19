@@ -571,6 +571,7 @@ export const nouns: string[] = [
   "Service",
   "Session",
   "Setting",
+  "Sex",
   "Shape",
   "Share",
   "Shirt",

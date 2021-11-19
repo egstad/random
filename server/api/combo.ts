@@ -26,7 +26,7 @@ const generatePairs = () => {
       noun: shuffledNouns[index],
       adjective: shuffledAdjectives[index],
       imageQueryString: shuffledImageQueryStrings[index],
-      image: shuffledImages[index],
+      // image: shuffledImages[index],
     });
   }
 
@@ -34,15 +34,24 @@ const generatePairs = () => {
 };
 
 const fetchImageData = async () => {
-  Promise.all(
-    shuffledImageQueryStrings.map(async (queryString) => {
-      const response = await fetch(
-        `https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&&prop=pageimages|pageterms&pithumbsize=1024&titles=${queryString}&origin=*`
-      );
-      const image = await response.json();
-      shuffledImages.push(image.query.pages[0].thumbnail);
-    })
-  );
+  shuffledImageQueryStrings.map(async (thing) => {
+    const response = await fetch(
+      `https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&&prop=pageimages|pageterms&pithumbsize=1024&titles=${thing}&origin=*`
+    )
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Something went wrong");
+        }
+      })
+      .then((responseJson) => {
+        shuffledImages.push(responseJson.query.pages[0].thumbnail);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
 };
 
 const shuffle = () => {

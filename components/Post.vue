@@ -110,8 +110,8 @@ export default {
 <style scoped>
 .pair {
   width: 100%;
-  opacity: 0;
-  transition: opacity 400ms ease-in-out;
+  opacity: 0.3;
+  transition: opacity 300ms ease-out;
 }
 .pair.is-visible {
   opacity: 1;
@@ -133,6 +133,8 @@ export default {
   position: relative;
   z-index: 3;
   transition: color 250ms ease-out;
+  padding-left: 24px;
+  padding-right: 24px;
   /* mix-blend-mode: exclusion; */
   /* min-height: 64px; */
 }
@@ -143,6 +145,7 @@ export default {
 
 .pair__adjective {
   text-align: right;
+  margin-right: 0.0125em;
 }
 .pair__noun {
   text-transform: uppercase;
@@ -169,6 +172,7 @@ export default {
   margin: 0 auto;
   transform: scale(0.95);
   transition: transform 350ms ease-in-out;
+  object-fit: contain;
 }
 .is-active .pair__pic img {
   transform: translate3d(0, 0, 0) scale(1);
@@ -211,5 +215,21 @@ export default {
   font-size: 10vw;
   letter-spacing: -0.02em;
   color: #4a462a;
+}
+
+@media (max-width: 768px) {
+  .t-display {
+    font-size: 11.5vw;
+    padding: 0.7vw 0;
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s;
+  max-height: 10vw;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  max-height: 0;
 }
 </style>

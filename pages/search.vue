@@ -29,7 +29,9 @@
         </td>
         <td v-else>None</td>
         <td v-if="result.image">
-          <button @click="copyString">Copy String</button>
+          <button @click="copyString(`&quot;${result.query}&quot;,`)">
+            Copy String
+          </button>
         </td>
         <td v-else>None</td>
       </tr>
@@ -38,6 +40,8 @@
 </template>
 
 <script>
+import copy from "copy-to-clipboard";
+
 export default {
   data() {
     return {
@@ -66,18 +70,9 @@ export default {
         });
       }
     },
-    copyString() {
-      navigator.clipboard.writeText(`"${this.searchInput}",`);
+    async copyString(str) {
+      copy(str);
     },
-    // capitalize(ev) {
-    //   var separateWord = ev.target.value.toLowerCase().split(" ");
-    //   for (var i = 0; i < separateWord.length; i++) {
-    //     separateWord[i] =
-    //       separateWord[i].charAt(0).toUpperCase() +
-    //       separateWord[i].substring(1);
-    //   }
-    //   this.searchInput = separateWord.join(" ");
-    // },
   },
 };
 </script>

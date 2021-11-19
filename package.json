@@ -9,6 +9,7 @@
     "nuxt3": "latest"
   },
   "dependencies": {
-    "array-shuffle": "^3.0.0"
+    "array-shuffle": "^3.0.0",
+    "copy-to-clipboard": "^3.3.1"
   }
 }
