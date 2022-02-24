@@ -233,4 +233,10 @@ export const imageQueryStrings: string[] = [
   "File:Kawanabesatou1.jpg",
   "File:Laser_beam_(4134608343).jpg",
   "File:Life_almost_over.JPG",
+  "Spirit possession",
+  "Slender Man",
+  "Zodiac Killer",
+  "Sleep paralysis",
+  "Timeline of the far future",
+  "File:Jan_Brueghel_de_Oude_en_Peter_Paul_Rubens_-_Het_aards_paradijs_met_de_zondeval_van_Adam_en_Eva.jpg",
 ];
