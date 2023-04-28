@@ -260,4 +260,5 @@ export const imageQueryStrings: string[] = [
   "Democracy",
   "File:Justice-2060093_1920.jpg",
   "Corporatocracy",
+  "Loab",
 ];
